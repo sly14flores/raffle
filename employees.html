@@ -163,10 +163,13 @@
 
 						<div class="row">							
 							<div class="col-xs-12">
-								<button class="btn btn-success">Import</button>
-									<div class="progress pos-rel" data-percent="66%">
-										<div class="progress-bar" style="width:66%;"></div>
-									</div>								
+								<button class="btn btn-success" import-employees>Import</button>
+									<div class="space-10" ng-show="views.importProgress"></div>
+									<div class="progress pos-rel" data-percent="{{views.progressStatus}}" ng-show="views.importProgress">
+										<div class="progress-bar" style="width:{{views.progressPercent}}%;"></div>
+									</div>
+									<div class="space-10" ng-show="views.alert"></div>
+									<div class="alert alert-danger" ng-show="views.alert">{{views.alertMsg}}</div>
 								<hr>
 								<div ng-include="activeTemplate"></div>
 							</div>
@@ -218,8 +221,11 @@
 		<script src="assets/js/ace-elements.min.js"></script>
 		<script src="assets/js/ace.min.js"></script>
 		
-		<script src="jquery/jquery.blockUI.js"></script>		
+		<script src="assets/js/bootbox.min.js"></script>		
+		<script src="jquery/jquery.blockUI.js"></script>
 		
+		<script src="modules/bootstrap-notify.js"></script>
+		<script src="modules/bootstrap-modal.js"></script>		
 		<script src="modules/block-ui.js"></script>		
 		<script src="controllers/employees.js"></script>		
 		

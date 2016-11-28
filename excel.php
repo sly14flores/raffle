@@ -31,6 +31,10 @@ require_once 'PHPExcel/IOFactory.php';
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
 
 $file = $_SERVER["DOCUMENT_ROOT"]."raffle/participants/list database.xlsx";
+if (!file_exists($file)) {
+	echo json_encode(array("status"=>0,"content"=>"File list 'database.xlsx' not found"));
+	exit();
+}
 $objPHPExcel = $objReader->load($file);
 
 $sheet_name = "Sheet1";

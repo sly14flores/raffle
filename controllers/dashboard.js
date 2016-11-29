@@ -66,7 +66,7 @@ app.factory('appService',function($http,$timeout,bootstrapModal,blockUI) {
 				$http({
 				  method: 'POST',
 				  url: 'controllers/dashboard.php?r=draw',
-				  data: {id: prize['id']}
+				  data: {prize_id: prize['id'], draw_date: 'CURRENT_TIMESTAMP'}
 				}).then(function mySucces(response) {
 				
 					blockUI.hide();

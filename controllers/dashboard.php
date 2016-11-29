@@ -34,7 +34,8 @@ switch ($_GET['r']) {
 	
 	case "draw":
 		
-		
+		$con = new pdo_db("draws");
+		$draw = $con->insertData($_POST);
 		
 	break;
 	

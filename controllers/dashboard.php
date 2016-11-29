@@ -21,6 +21,23 @@ switch ($_GET['r']) {
 		
 	break;
 	
+	case "prizes":
+	
+		$con = new pdo_db();
+		
+		$filter = isset($_POST['prize_type']) ? " WHERE prize_type = '$_POST[prize_type]'" : "";
+		$prizes = $con->getData("SELECT id, prize_description, no_of_winners FROM prizes$filter");
+		
+		echo json_encode($prizes);
+	
+	break;
+	
+	case "draw":
+		
+		
+		
+	break;
+	
 }
 
 ?>

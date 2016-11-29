@@ -56,17 +56,73 @@ app.factory('appService',function($http,$timeout,bootstrapModal,blockUI) {
 			
 		};
 		
+		self.draw = function(scope,prize) {
+			
+			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to proceed to draw '+prize['prize_description']+'?',function() { execDraw(); },function() {});
+
+			function execDraw() {
+				
+				blockUI.show(prize['prize_description']+ ' on progress...');
+				$http({
+				  method: 'POST',
+				  url: 'controllers/dashboard.php?r=draw',
+				  data: {id: prize['id']}
+				}).then(function mySucces(response) {
+				
+					blockUI.hide();
+					
+				}, function myError(response) {
+
+				  // error
+
+				});					
+				
+			}
+			
+		}
+		
 	};
 	
 	return new appService();
 	
 });
 
-app.controller('dashboardCtrl', function($scope,$timeout,appService) {
+app.controller('dashboardCtrl', function($http,$scope,$timeout,appService) {
 	
 	$scope.views = {};
-	$scope.info = {};
+	
+	$scope.views.alert = false;
+	$scope.views.alertMsg = '';
+	
+	$scope.draw = function() {
+		$scope.views.alert = false;
+		$scope.views.alertMsg = '';		
+		if (($scope.views.prize == undefined) || ($scope.views.prize == '')) {
+			$scope.views.alert = true;
+			$scope.views.alertMsg = 'No prize to draw, please select one';
+			return;
+		}
+		appService.draw($scope,$scope.views.prize);
+	};
+	
+	$scope.views.prizeTypeSelect = function() {
+		$http({
+		  method: 'POST',
+		  url: 'controllers/dashboard.php?r=prizes',
+		  data: {prize_type: $scope.views.prize_type}
+		}).then(function mySucces(response) {
+		
+			$scope.views.prizes = response.data;
+			
+		}, function myError(response) {
+
+		  // error
+
+		});		
+	};
 	
 	appService.draws($scope);
+
+	$timeout(function() { $scope.views.prizeTypeSelect(); },100);
 	
 });

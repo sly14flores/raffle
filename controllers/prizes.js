@@ -69,7 +69,7 @@ app.factory('appService',function($http,$timeout,bootstrapModal,blockUI) {
 				frm += '<div class="form-group">';
 				frm += '<label class="col-md-3 control-label no-padding-right">Prize Type</label>';
 				frm += '<div class="col-md-9">';
-				frm += '<select class="form-control" name="prize_type" ng-model="info.prize_type">';
+				frm += '<select class="form-control" name="prize_type" ng-change="prizeTypeSelect()" ng-model="info.prize_type">';
 				frm += '<option value=""></option>';
 				frm += '<option value="Minor">Minor Prize</option>';
 				frm += '<option value="Major">Major Prize</option>';
@@ -79,7 +79,7 @@ app.factory('appService',function($http,$timeout,bootstrapModal,blockUI) {
 				frm += '<div class="form-group">';
 				frm += '<label class="col-md-3 control-label no-padding-right">No of Winner(s)</label>';
 				frm += '<div class="col-md-9">';
-				frm += '<input class="form-control" type="number" name="no_of_winners" ng-model="info.no_of_winners">';
+				frm += '<input class="form-control" type="number" name="no_of_winners" ng-model="info.no_of_winners" ng-disabled="views.no_of_winners">';
 				frm += '</div>';
 				frm += '</div>';					
 				frm += '</form>';
@@ -96,6 +96,7 @@ app.factory('appService',function($http,$timeout,bootstrapModal,blockUI) {
 					}).then(function mySucces(response) {
 						
 						scope.info = response.data;
+						$timeout(function() { if (scope.info.prize_type == "Major") scope.views.no_of_winners = true; },100);						
 						
 					}, function myError(response) {
 
@@ -158,23 +159,37 @@ app.factory('appService',function($http,$timeout,bootstrapModal,blockUI) {
 	
 });
 
-app.controller('prizesCtrl', function($scope,$interval,appService) {
+app.controller('prizesCtrl', function($scope,$timeout,appService) {
 	
 	$scope.views = {};
 	$scope.info = {};
-
+	
 	appService.prizes($scope);
 	
-	$scope.addPrize = function() {
+	$scope.addPrize = function() {		
 		appService.prizeForm($scope,0);
+		$scope.info.no_of_winners = "";
+		$scope.views.no_of_winners = false;
+		$scope.info.prize_type = "";
+		$scope.info = {};		
 	}
 	
 	$scope.editPrize = function(id) {
 		appService.prizeForm($scope,id);
+		$scope.views.no_of_winners = false;
 	};
 	
 	$scope.delPrize = function(id) {
 		appService.delPrize($scope,id);
-	};	
+	};
+	
+	$scope.prizeTypeSelect = function() {
+		$scope.info.no_of_winners = "";
+		$scope.views.no_of_winners = false;		
+		if ($scope.info.prize_type == "Major") {
+			$scope.info.no_of_winners = 1;
+			$scope.views.no_of_winners = true;
+		}
+	};
 	
 });

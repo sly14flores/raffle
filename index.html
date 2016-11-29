@@ -41,7 +41,7 @@
 		<![endif]-->
 	</head>
 
-	<body class="no-skin">
+	<body class="no-skin" ng-app="dashboard" ng-controller="dashboardCtrl">
 		<div id="navbar" class="navbar navbar-default">
 			<script type="text/javascript">
 				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
@@ -161,9 +161,11 @@
 							</h1>
 						</div><!-- /.page-header -->
 
-						<div class="row">
+						<div class="row">							
 							<div class="col-xs-12">
-							
+								<button class="btn btn-success" ng-click="addPrize()">Draw</button>
+								<hr>
+								<div ng-include="activeTemplate"></div>
 							</div>
 						</div><!-- /.row -->
 					</div><!-- /.page-content -->
@@ -193,6 +195,10 @@
 		<script src="assets/js/bootstrap.min.js"></script>
 
 		<!-- page specific plugin scripts -->
+		<script src="assets/js/jquery.dataTables.min.js"></script>
+		<script src="assets/js/jquery.dataTables.bootstrap.min.js"></script>
+		<script src="assets/js/dataTables.tableTools.min.js"></script>
+		<script src="assets/js/dataTables.colVis.min.js"></script>			
 
 		<!--[if lte IE 8]>
 		  <script src="assets/js/excanvas.min.js"></script>
@@ -208,6 +214,14 @@
 		<!-- ace scripts -->
 		<script src="assets/js/ace-elements.min.js"></script>
 		<script src="assets/js/ace.min.js"></script>
+		
+		<script src="assets/js/bootbox.min.js"></script>		
+		<script src="jquery/jquery.blockUI.js"></script>
+		
+		<script src="modules/bootstrap-notify.js"></script>
+		<script src="modules/bootstrap-modal.js"></script>		
+		<script src="modules/block-ui.js"></script>		
+		<script src="controllers/dashboard.js"></script>		
 		
 	</body>
 </html>

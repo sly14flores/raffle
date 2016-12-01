@@ -36,16 +36,24 @@ switch ($_GET['r']) {
 	
 		$con = new pdo_db();
 		
-		$prize = $con->getData("SELECT prizes.prize_description, prizes.no_of_winners, prizes.prize_type FROM prizes LEFT JOIN draws ON prizes.id = draws.prize_id WHERE draws.id  = $_POST[draw_id]");
+		$prize = $con->getData("SELECT draws.id, prizes.prize_description, prizes.no_of_winners, prizes.prize_type FROM prizes LEFT JOIN draws ON prizes.id = draws.prize_id WHERE draws.id  = $_POST[draw_id]");
 
 		echo json_encode($prize[0]);
 	
 	break;
 	
-	case "draw":
+	case "add":
 		
 		$con = new pdo_db("draws");
-		$draw = $con->insertData($_POST);
+		$add = $con->insertData($_POST);
+		
+	break;
+	
+	case "draw":
+		
+		$con = new pdo_db("winners");
+		
+		echo "";
 		
 	break;
 	

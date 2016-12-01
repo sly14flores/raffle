@@ -58,14 +58,14 @@ app.factory('appService',function($http,$timeout,bootstrapModal,bootstrapNotify,
 		
 		self.add = function(scope,prize) {
 			
-			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to add '+prize['prize_description']+'?',function() { execDraw(); },function() {});
+			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to add '+prize['prize_description']+'?',function() { add(); },function() {});
 
-			function execDraw() {
+			function add() {
 				
 				blockUI.show(prize['prize_description']+ ' on progress...');
 				$http({
 				  method: 'POST',
-				  url: 'controllers/dashboard.php?r=draw',
+				  url: 'controllers/dashboard.php?r=add',
 				  data: {prize_id: prize['id'], draw_date: 'CURRENT_TIMESTAMP'}
 				}).then(function mySucces(response) {
 					blockUI.hide();
@@ -96,9 +96,9 @@ app.factory('appService',function($http,$timeout,bootstrapModal,bootstrapNotify,
 					blockUI.hide();
 					$('#dynamic-table').dataTable().fnDestroy();
 					$timeout(function() { self.draws(scope); },100);
-					// localStorage.status = "start";
-					// localStorage.prize = draw['id'];
-					// localStorage.prize_type = draw['prize_type'];
+					localStorage.status = "start";
+					localStorage.prize = draw['id'];
+					localStorage.prize_type = draw['prize_type'];
 					bootstrapNotify.show('success',draw['prize_description']+' raffle draw has started');
 					
 				}, function myError(response) {
@@ -150,10 +150,20 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService) {
 	
 	$scope.views.alert = false;
 	$scope.views.alertMsg = '';
-	
-	$scope.draw = function(draw_id) {
+
+	$scope.add = function() {
 		$scope.views.alert = false;
 		$scope.views.alertMsg = '';
+		$scope.views.alertMsg = '';		
+		if (($scope.views.prize == undefined) || ($scope.views.prize == '')) {
+			$scope.views.alert = true;
+			$scope.views.alertMsg = 'No prize to add, please select one';
+			return;
+		}
+		appService.add($scope,$scope.views.prize);
+	};	
+	
+	$scope.draw = function(draw_id) {	
 		$http({
 		  method: 'POST',
 		  url: 'controllers/dashboard.php?r=prize',
@@ -166,8 +176,7 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService) {
 
 		  // error
 
-		});		
-		
+		});
 	};
 	
 	$scope.views.prizeTypeSelect = function() {

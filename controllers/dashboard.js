@@ -86,28 +86,13 @@ app.factory('appService',function($http,$timeout,bootstrapModal,bootstrapNotify,
 			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to draw '+draw['prize_description']+'?',function() { execDraw(); },function() {});
 
 			function execDraw() {
-				
-				blockUI.show(draw['prize_description']+ ' on progress...');
-				$http({
-				  method: 'POST',
-				  url: 'controllers/dashboard.php?r=draw',
-				  data: {prize_id: draw['id'], draw_date: 'CURRENT_TIMESTAMP'}
-				}).then(function mySucces(response) {
-					blockUI.hide();
-					$('#dynamic-table').dataTable().fnDestroy();
-					$timeout(function() { self.draws(scope); },100);
-					localStorage.status = "start";
-					localStorage.prize = draw['id'];
-					localStorage.prize_type = draw['prize_type'];
-					bootstrapNotify.show('success',draw['prize_description']+' raffle draw has started');
-					
-				}, function myError(response) {
 
-				  // error
+				localStorage.status = "start";
+				localStorage.prize = draw['id'];
+				localStorage.prize_type = draw['prize_type'];
+				bootstrapNotify.show('success',draw['prize_description']+' raffle draw has started');
 
-				});					
-				
-			}
+			};
 			
 		};		
 		

@@ -12,8 +12,19 @@ app.factory('appService',function($http,$timeout,$interval,bootstrapNotify) {
 				
 				if (localStorage.status == "start") {
 
-					scope.views.randomPick = 'Lorem, Ipsum ' + localStorage.prize;
 					localStorage.status = "stop";
+					
+					$http({
+					  method: 'POST',
+					  url: 'controllers/monitor.php?r=draw',
+					  data: {draw_id: localStorage.prize}
+					}).then(function mySucces(response) {
+						scope.views.randomPick = response.data;
+					}, function myError(response) {
+
+					  // error
+
+					});					
 					
 				}
 				

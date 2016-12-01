@@ -49,14 +49,6 @@ switch ($_GET['r']) {
 		
 	break;
 	
-	case "draw":
-		
-		$con = new pdo_db("winners");
-		
-		echo "";
-		
-	break;
-	
 	case "delete":
 		
 		$con = new pdo_db("draws");

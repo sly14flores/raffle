@@ -26,9 +26,19 @@ switch ($_GET['r']) {
 		$con = new pdo_db();
 		
 		$filter = isset($_POST['prize_type']) ? " WHERE prize_type = '$_POST[prize_type]'" : "";
-		$prizes = $con->getData("SELECT id, prize_description, no_of_winners FROM prizes$filter");
+		$prizes = $con->getData("SELECT id, prize_description, no_of_winners, prize_type FROM prizes$filter");
 		
 		echo json_encode($prizes);
+	
+	break;
+	
+	case "prize":
+	
+		$con = new pdo_db();
+		
+		$prize = $con->getData("SELECT prizes.prize_description, prizes.no_of_winners, prizes.prize_type FROM prizes LEFT JOIN draws ON prizes.id = draws.prize_id WHERE draws.id  = $_POST[draw_id]");
+
+		echo json_encode($prize[0]);
 	
 	break;
 	
@@ -37,6 +47,13 @@ switch ($_GET['r']) {
 		$con = new pdo_db("draws");
 		$draw = $con->insertData($_POST);
 		
+	break;
+	
+	case "delete":
+		
+		$con = new pdo_db("draws");
+		$con->deleteData(array("id"=>implode(",",$_POST['id'])));		
+	
 	break;
 	
 }

@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta charset="utf-8" />
-		<title>Control Panel | Raffle System - PGLU Christmas Party</title>
+		<title>Control Panel | Raffle Draw System - PGLU Christmas Party</title>
 
 		<meta name="description" content="" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -62,7 +62,7 @@
 					<a href="index.html" class="navbar-brand">
 						<small>
 							<i class="fa fa-gift"></i>
-							Raffle System
+							Raffle Draw System
 						</small>
 					</a>
 				</div>
@@ -163,6 +163,8 @@
 
 						<div class="row">							
 							<div class="col-xs-12">
+								<button type="button" class="btn btn-sm btn-pink" ng-click="monitor()">Monitor</button>
+								<hr>
 								<form class="form-inline">
 								  <div class="form-group">
 									<label>Prize Type</label>
@@ -178,7 +180,7 @@
 										<option value="">-</option>
 									</select>
 								  </div>
-								  <button type="submit" class="btn btn-sm btn-primary" ng-click="draw()">Draw</button>
+								  <button type="button" class="btn btn-sm btn-primary" ng-click="add()">Add</button>
 								</form>
 									<div class="space-10" ng-show="views.alert"></div>
 									<div class="alert alert-danger" ng-show="views.alert">{{views.alertMsg}}</div>								
@@ -194,7 +196,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">Raffle System</span>
+							<span class="blue bolder">Raffle Draw System</span>
 							PGLU &copy; 2016
 						</span>
 					</div>
@@ -235,6 +237,7 @@
 		
 		<script src="assets/js/bootbox.min.js"></script>		
 		<script src="jquery/jquery.blockUI.js"></script>
+		<script src="bootstrap-notify-3.1.3/bootstrap-notify.min.js"></script>		
 		
 		<script src="modules/bootstrap-notify.js"></script>
 		<script src="modules/bootstrap-modal.js"></script>		

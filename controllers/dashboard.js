@@ -1,6 +1,6 @@
 var app = angular.module('dashboard', ['block-ui','bootstrap-notify','bootstrap-modal']);
 
-app.factory('appService',function($http,$timeout,bootstrapModal,blockUI) {
+app.factory('appService',function($http,$timeout,bootstrapModal,bootstrapNotify,blockUI) {
 	
 	function appService() {
 		
@@ -56,9 +56,9 @@ app.factory('appService',function($http,$timeout,bootstrapModal,blockUI) {
 			
 		};
 		
-		self.draw = function(scope,prize) {
+		self.add = function(scope,prize) {
 			
-			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to proceed to draw '+prize['prize_description']+'?',function() { execDraw(); },function() {});
+			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to add '+prize['prize_description']+'?',function() { execDraw(); },function() {});
 
 			function execDraw() {
 				
@@ -68,8 +68,38 @@ app.factory('appService',function($http,$timeout,bootstrapModal,blockUI) {
 				  url: 'controllers/dashboard.php?r=draw',
 				  data: {prize_id: prize['id'], draw_date: 'CURRENT_TIMESTAMP'}
 				}).then(function mySucces(response) {
-				
 					blockUI.hide();
+					$('#dynamic-table').dataTable().fnDestroy();
+					$timeout(function() { self.draws(scope); },100);
+				}, function myError(response) {
+
+				  // error
+
+				});					
+				
+			}
+			
+		};
+		
+		self.draw = function(scope,draw) {
+			
+			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to draw '+draw['prize_description']+'?',function() { execDraw(); },function() {});
+
+			function execDraw() {
+				
+				blockUI.show(draw['prize_description']+ ' on progress...');
+				$http({
+				  method: 'POST',
+				  url: 'controllers/dashboard.php?r=draw',
+				  data: {prize_id: draw['id'], draw_date: 'CURRENT_TIMESTAMP'}
+				}).then(function mySucces(response) {
+					blockUI.hide();
+					$('#dynamic-table').dataTable().fnDestroy();
+					$timeout(function() { self.draws(scope); },100);
+					// localStorage.status = "start";
+					// localStorage.prize = draw['id'];
+					// localStorage.prize_type = draw['prize_type'];
+					bootstrapNotify.show('success',draw['prize_description']+' raffle draw has started');
 					
 				}, function myError(response) {
 
@@ -79,7 +109,34 @@ app.factory('appService',function($http,$timeout,bootstrapModal,blockUI) {
 				
 			}
 			
-		}
+		};		
+		
+		self.del = function(scope,id) {
+			
+			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to delete this draw?',function() { del(); },function() {});
+
+			function del() {
+				
+				blockUI.show();
+				$http({
+				  method: 'POST',
+				  url: 'controllers/dashboard.php?r=delete',
+				  data: {id: [id]}
+				}).then(function mySucces(response) {
+					
+					$('#dynamic-table').dataTable().fnDestroy();
+					self.draws(scope);
+					blockUI.hide();
+					
+				}, function myError(response) {
+
+				  // error
+
+				});					
+				
+			}			
+			
+		};
 		
 	};
 	
@@ -94,15 +151,23 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService) {
 	$scope.views.alert = false;
 	$scope.views.alertMsg = '';
 	
-	$scope.draw = function() {
+	$scope.draw = function(draw_id) {
 		$scope.views.alert = false;
-		$scope.views.alertMsg = '';		
-		if (($scope.views.prize == undefined) || ($scope.views.prize == '')) {
-			$scope.views.alert = true;
-			$scope.views.alertMsg = 'No prize to draw, please select one';
-			return;
-		}
-		appService.draw($scope,$scope.views.prize);
+		$scope.views.alertMsg = '';
+		$http({
+		  method: 'POST',
+		  url: 'controllers/dashboard.php?r=prize',
+		  data: {draw_id: draw_id}
+		}).then(function mySucces(response) {
+
+			appService.draw($scope,response.data);
+			
+		}, function myError(response) {
+
+		  // error
+
+		});		
+		
 	};
 	
 	$scope.views.prizeTypeSelect = function() {
@@ -121,8 +186,20 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService) {
 		});		
 	};
 	
+	$scope.del = function(id) {
+		appService.del($scope,id);
+	};
+	
+	$scope.monitor = function() {
+		window.open("monitor/","_blank","");
+	}
+	
 	appService.draws($scope);
 
 	$timeout(function() { $scope.views.prizeTypeSelect(); },100);
+	
+	if (localStorage.status == undefined) localStorage.status = "stop";
+	if (localStorage.prize == undefined) localStorage.prize = 0;
+	if (localStorage.prize_type == undefined) localStorage.prize_type = "";
 	
 });

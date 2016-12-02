@@ -9,6 +9,12 @@ app.factory('appService',function($http,$timeout,$interval,bootstrapNotify) {
 		self.draw = function(scope) {
 			
 			$interval(function() {
+
+				if (localStorage.clearScreen == 1) {
+					localStorage.clearScreen = 0;
+					scope.views.pick = '';
+					scope.views.office = '';
+				}
 				
 				if (localStorage.status == "start") {
 
@@ -19,7 +25,8 @@ app.factory('appService',function($http,$timeout,$interval,bootstrapNotify) {
 					  url: 'controllers/monitor.php?r=draw',
 					  data: {draw_id: localStorage.prize}
 					}).then(function mySucces(response) {
-						scope.views.randomPick = response.data;
+						scope.views.pick = response.data['fullname'];
+						scope.views.office = response.data['office'];
 					}, function myError(response) {
 
 					  // error
@@ -42,9 +49,10 @@ app.controller('monitorCtrl', function($scope,$interval,appService,bootstrapNoti
 	
 	$scope.views = {};
 	
-	$scope.views.randomPick = '';
+	$scope.views.pick = '';
+	$scope.views.office = '';
 	
-	if ( (localStorage.status == undefined) || (localStorage.prize == undefined) || (localStorage.prize_type == undefined) ) {
+	if ( (localStorage.status == undefined) || (localStorage.prize == undefined) || (localStorage.prize_type == undefined) || (localStorage.clear == undefined) ) {
 		
 		bootstrapNotify.show('danger','Monitor is not ready, make sure the Dashboard in the Admin Page is active.');
 		
@@ -53,6 +61,8 @@ app.controller('monitorCtrl', function($scope,$interval,appService,bootstrapNoti
 		localStorage.status = "stop";
 		localStorage.prize = 0;
 		localStorage.prize_type = "";
+		localStorage.clearScreen = 0;
+		
 		bootstrapNotify.show('success','Monitor is ready for raffle draws.');
 		appService.draw($scope);		
 		

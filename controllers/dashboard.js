@@ -91,6 +91,8 @@ app.factory('appService',function($http,$timeout,bootstrapModal,bootstrapNotify,
 				localStorage.prize = draw['id'];
 				localStorage.prize_type = draw['prize_type'];
 				bootstrapNotify.show('success',draw['prize_description']+' raffle draw has started');
+				$('#dynamic-table').dataTable().fnDestroy();
+				$timeout(function() { self.draws(scope); },1000);
 
 			};
 			
@@ -186,7 +188,11 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService) {
 	
 	$scope.monitor = function() {
 		window.open("monitor/","_blank","");
-	}
+	};
+	
+	$scope.clear = function() {
+		localStorage.clearScreen = 1;
+	};
 	
 	appService.draws($scope);
 
@@ -195,5 +201,6 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService) {
 	if (localStorage.status == undefined) localStorage.status = "stop";
 	if (localStorage.prize == undefined) localStorage.prize = 0;
 	if (localStorage.prize_type == undefined) localStorage.prize_type = "";
+	if (localStorage.clearScreen == undefined) localStorage.clearScreen = 0;
 	
 });

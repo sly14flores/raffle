@@ -1,9 +1,10 @@
+<?php require_once 'authentication.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta charset="utf-8" />
-		<title>Manage Employees (Participants) | Raffle Draw System - PGLU Christmas Party</title>
+		<title>Manage Prizes | Raffle Draw System - PGLU Christmas Party</title>
 
 		<meta name="description" content="" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -41,7 +42,7 @@
 		<![endif]-->
 	</head>
 
-	<body class="no-skin" ng-app="employees" ng-controller="employeesCtrl">
+	<body class="no-skin" ng-app="prizes" ng-controller="prizesCtrl">
 		<div id="navbar" class="navbar navbar-default">
 			<script type="text/javascript">
 				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
@@ -59,7 +60,7 @@
 				</button>
 
 				<div class="navbar-header pull-left">
-					<a href="index.html" class="navbar-brand">
+					<a href="index.php" class="navbar-brand">
 						<small>
 							<i class="fa fa-gift"></i>
 							Raffle Draw System
@@ -81,7 +82,7 @@
 
 							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 								<li>
-									<a href="#">
+									<a href="javascript:;" logout-account>
 										<i class="ace-icon fa fa-power-off"></i>
 										Logout
 									</a>
@@ -105,23 +106,23 @@
 
 				<ul class="nav nav-list">
 					<li class="">
-						<a href="index.html">
+						<a href="index.php">
 							<i class="menu-icon fa fa-tachometer"></i>
 							<span class="menu-text"> Dashboard </span>
 						</a>
 
 						<b class="arrow"></b>
 					</li>
-					<li class="active">
-						<a href="employees.html">
+					<li class="">
+						<a href="employees.php">
 							<i class="menu-icon fa fa-users"></i>
 							<span class="menu-text"> Employees </span>
 						</a>
 
 						<b class="arrow"></b>
 					</li>
-					<li class="">
-						<a href="prizes.html">
+					<li class="active">
+						<a href="prizes.php">
 							<i class="menu-icon glyphicon glyphicon-tags"></i>
 							<span class="menu-text"> Prizes </span>
 						</a>
@@ -147,14 +148,14 @@
 						</script>
 
 						<ul class="breadcrumb">
-							<li class="active">Employees</li>
+							<li class="active">Prizes</li>
 						</ul><!-- /.breadcrumb -->
 					</div>
 
 					<div class="page-content">
 						<div class="page-header">
 							<h1>
-								Employees (Participants)
+								Prizes
 								<small>
 									<i class="ace-icon fa fa-angle-double-right"></i>									
 								</small>
@@ -163,13 +164,7 @@
 
 						<div class="row">							
 							<div class="col-xs-12">
-								<button class="btn btn-success" import-employees>Import</button>
-									<div class="space-10" ng-show="views.importProgress"></div>
-									<div class="progress pos-rel" data-percent="{{views.progressStatus}}" ng-show="views.importProgress">
-										<div class="progress-bar" style="width:{{views.progressPercent}}%;"></div>
-									</div>
-									<div class="space-10" ng-show="views.alert"></div>
-									<div class="alert alert-danger" ng-show="views.alert">{{views.alertMsg}}</div>
+								<button class="btn btn-success" ng-click="addPrize()">Add</button>
 								<hr>
 								<div ng-include="activeTemplate"></div>
 							</div>
@@ -205,7 +200,7 @@
 		<script src="assets/js/jquery.dataTables.bootstrap.min.js"></script>
 		<script src="assets/js/dataTables.tableTools.min.js"></script>
 		<script src="assets/js/dataTables.colVis.min.js"></script>	
-		
+
 		<!--[if lte IE 8]>
 		  <script src="assets/js/excanvas.min.js"></script>
 		<![endif]-->
@@ -226,8 +221,9 @@
 		
 		<script src="modules/bootstrap-notify.js"></script>
 		<script src="modules/bootstrap-modal.js"></script>		
-		<script src="modules/block-ui.js"></script>		
-		<script src="controllers/employees.js"></script>		
+		<script src="modules/block-ui.js"></script>
+		<script src="modules/account.js"></script>		
+		<script src="controllers/prizes.js"></script>		
 		
 	</body>
 </html>

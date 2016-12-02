@@ -1,3 +1,4 @@
+<?php require_once 'authentication.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -59,7 +60,7 @@
 				</button>
 
 				<div class="navbar-header pull-left">
-					<a href="index.html" class="navbar-brand">
+					<a href="index.php" class="navbar-brand">
 						<small>
 							<i class="fa fa-gift"></i>
 							Raffle Draw System
@@ -81,7 +82,7 @@
 
 							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 								<li>
-									<a href="#">
+									<a href="javascript:;" logout-account>
 										<i class="ace-icon fa fa-power-off"></i>
 										Logout
 									</a>
@@ -105,7 +106,7 @@
 
 				<ul class="nav nav-list">
 					<li class="active">
-						<a href="index.html">
+						<a href="index.php">
 							<i class="menu-icon fa fa-tachometer"></i>
 							<span class="menu-text"> Dashboard </span>
 						</a>
@@ -113,7 +114,7 @@
 						<b class="arrow"></b>
 					</li>
 					<li class="">
-						<a href="employees.html">
+						<a href="employees.php">
 							<i class="menu-icon fa fa-users"></i>
 							<span class="menu-text"> Employees </span>
 						</a>
@@ -121,7 +122,7 @@
 						<b class="arrow"></b>
 					</li>
 					<li class="">
-						<a href="prizes.html">
+						<a href="prizes.php">
 							<i class="menu-icon glyphicon glyphicon-tags"></i>
 							<span class="menu-text"> Prizes </span>
 						</a>
@@ -243,6 +244,7 @@
 		<script src="modules/bootstrap-notify.js"></script>
 		<script src="modules/bootstrap-modal.js"></script>		
 		<script src="modules/block-ui.js"></script>		
+		<script src="modules/account.js"></script>
 		<script src="controllers/dashboard.js"></script>		
 		
 	</body>

@@ -1,4 +1,4 @@
-var app = angular.module('prizes', ['block-ui','bootstrap-notify','bootstrap-modal']);
+var app = angular.module('prizes', ['block-ui','bootstrap-notify','bootstrap-modal','account-module']);
 
 app.factory('appService',function($http,$timeout,bootstrapModal,blockUI) {
 	

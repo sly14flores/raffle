@@ -73,6 +73,7 @@ app.factory('appService',function($http,$timeout,bootstrapModal,blockUI) {
 				frm += '<option value=""></option>';
 				frm += '<option value="Minor">Minor Prize</option>';
 				frm += '<option value="Major">Major Prize</option>';
+				frm += '<option value="Jackpot">Jackpot Prize</option>';
 				frm += '</select>';
 				frm += '</div>';
 				frm += '</div>';
@@ -96,7 +97,7 @@ app.factory('appService',function($http,$timeout,bootstrapModal,blockUI) {
 					}).then(function mySucces(response) {
 						
 						scope.info = response.data;
-						$timeout(function() { if (scope.info.prize_type == "Major") scope.views.no_of_winners = true; },100);						
+						$timeout(function() { if (scope.info.prize_type == "Jackpot") scope.views.no_of_winners = true; },100);						
 						
 					}, function myError(response) {
 
@@ -186,7 +187,7 @@ app.controller('prizesCtrl', function($scope,$timeout,appService) {
 	$scope.prizeTypeSelect = function() {
 		$scope.info.no_of_winners = "";
 		$scope.views.no_of_winners = false;		
-		if ($scope.info.prize_type == "Major") {
+		if ($scope.info.prize_type == "Jackpot") {
 			$scope.info.no_of_winners = 1;
 			$scope.views.no_of_winners = true;
 		}

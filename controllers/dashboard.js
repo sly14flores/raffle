@@ -32,7 +32,7 @@ app.factory('appService',function($http,$timeout,bootstrapModal,bootstrapNotify,
 			.dataTable( {
 				bAutoWidth: false,
 				"aoColumns": [
-				  null, null, null, null, { "bSortable": false }
+				  { "bSortable": false }, null, null, null, null, null, { "bSortable": false }
 				],
 				"aaSorting": [],
 		
@@ -92,7 +92,7 @@ app.factory('appService',function($http,$timeout,bootstrapModal,bootstrapNotify,
 				if ((parseInt(response.data['total']) + 1) <= parseInt(draw['no_of_winners'])) {
 					bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to draw '+draw['prize_description']+'?',function() { execDraw(); },function() {});
 				} else {
-					bootstrapNotify.show('danger','Maximum allowed no of winner(s) for ' + draw['prize_description'] + 'has been reached');
+					bootstrapNotify.show('danger','Maximum allowed no of winner(s) for ' + draw['prize_description'] + ' has been reached');
 				}
 				
 				
@@ -130,6 +130,9 @@ app.factory('appService',function($http,$timeout,bootstrapModal,bootstrapNotify,
 					
 					$('#dynamic-table').dataTable().fnDestroy();
 					self.draws(scope);
+					localStorage.toggledDraw = "";
+					localStorage.toggledDrawPrizeType = "";
+					localStorage.clearScreen = 1;					
 					blockUI.hide();
 					
 				}, function myError(response) {
@@ -176,7 +179,7 @@ app.factory('appService',function($http,$timeout,bootstrapModal,bootstrapNotify,
 	
 });
 
-app.controller('dashboardCtrl', function($http,$scope,$timeout,appService) {
+app.controller('dashboardCtrl', function($http,$scope,$timeout,appService,bootstrapNotify) {
 	
 	$scope.views = {};
 	
@@ -195,7 +198,18 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService) {
 		appService.add($scope,$scope.views.prize);
 	};	
 	
-	$scope.draw = function(draw_id) {	
+	$scope.draw = function(draw_id) {
+		
+		if (!$scope.views.toggledDraw.hasOwnProperty("id")) {
+			bootstrapNotify.show('danger','You must toggle on this raffle first to make a draw');
+			return;
+		};
+		
+		if ($scope.views.toggledDraw.id != draw_id) {
+			bootstrapNotify.show('danger','You must toggle off ' + $scope.views.toggledDraw['description'] + ' raffle and toggle on this raffle to make a draw');
+			return;			
+		}
+		
 		$http({
 		  method: 'POST',
 		  url: 'controllers/dashboard.php?r=prize',
@@ -243,6 +257,26 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService) {
 		localStorage.clearScreen = 1;
 	};
 	
+	$scope.toggle = function(prize) {
+		
+		$scope.views.toggledDraw = {};		
+		localStorage.toggledDraw = "";
+		localStorage.toggledDrawPrizeType = "";
+		localStorage.clearScreen = 1;		
+		angular.forEach($scope.views.toggles, function(value, key) {
+			if (prize.id != key) {
+				$scope.views.toggles[key] = false;
+			}
+		});
+		if ($scope.views.toggles[prize.id]) {
+			$scope.views.toggledDraw = prize;
+			bootstrapNotify.show('success',prize['description'] + ' is toggled on');
+			localStorage.toggledDraw = prize['description'];
+			localStorage.toggledDrawPrizeType = prize['prize_type'] + ' Prize';
+		}
+		
+	};
+	
 	appService.draws($scope);
 
 	$timeout(function() { $scope.views.prizeTypeSelect(); },100);
@@ -251,5 +285,14 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService) {
 	if (localStorage.prize == undefined) localStorage.prize = 0;
 	if (localStorage.prize_type == undefined) localStorage.prize_type = "";
 	if (localStorage.clearScreen == undefined) localStorage.clearScreen = 0;
+	
+	if (localStorage.toggledDraw == undefined) localStorage.toggledDraw = "";
+	if (localStorage.toggledDrawPrizeType == undefined) localStorage.toggledDrawPrizeType = "";
+	
+	$scope.views.toggles = {};
+	$scope.views.toggledDraw = {};
+
+	localStorage.toggledDraw = "";
+	localStorage.toggledDrawPrizeType = "";	
 	
 });

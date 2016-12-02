@@ -46,15 +46,28 @@
 				background-color: #fff;
 			}
 			
-			.pick {
+			.toggled-draw-type {
 				text-align: center;
-				margin-top: 20%;
+				font-size: 3em;
+				font-weight: bold;
+				color: #fd7e7e;				
+			}			
+			
+			.toggled-draw {
+				text-align: center;
+				font-size: 5em;
+				font-weight: bold;
+				color: #ef3e3e;
+			}
+			
+			.pick {
+				margin-top: 5%;
+				text-align: center;
 				font-size: 7em;
 			}
 			
 			.office {
 				text-align: center;
-				margin-top: 20px;
 				font-size: 5em;
 				color: #7c7c7c;
 			}
@@ -65,10 +78,10 @@
 	<body class="no-skin" ng-app="monitor" ng-controller="monitorCtrl">
 
 		<div class="main-container" id="main-container">
-			<div class="container">
-				<p class="pick">{{views.pick}}</p>
-				<p class="office">{{views.office}}</p>
-			</div>
+			<p class="toggled-draw-type">{{views.toggledDrawPrizeType}}</p>
+			<p class="toggled-draw">{{views.toggledDraw}}</p>			
+			<p class="pick">{{views.pick}}</p>
+			<p class="office">{{views.office}}</p>
 		</div>
 	
 		<div class="footer">

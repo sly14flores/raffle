@@ -5,9 +5,11 @@
 	<table id="dynamic-table" class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
+				<th>Toggle</th>
 				<th>Description</th>
 				<th>Type</th>
 				<th>Winner(s)</th>
+				<th>No of winner(s)</th>
 				<th>Date</th>
 				<th></th>
 			</tr>
@@ -15,6 +17,12 @@
 
 		<tbody>
 			<tr ng-repeat="info in draws">
+				<td>
+				<label class="pull-right inline">
+				<input type="checkbox" class="ace ace-switch ace-switch-5" ng-model="views.toggles[info.id]" ng-model="views.toggleRaffle" ng-change="toggle(info)">
+				<span class="lbl middle"></span>
+				</label>
+				</td>
 				<td>{{info.description}}</td>
 				<td>{{info.prize_type}}</td>
 				<td>
@@ -45,6 +53,7 @@
 					</tbody>
 					</table>
 				</td>
+				<td>{{info.no_of_winners}}</td>
 				<td>{{info.date_drawn}}</td>
 				<td>
 					<div class="hidden-sm hidden-xs action-buttons">

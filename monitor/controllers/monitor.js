@@ -16,6 +16,9 @@ app.factory('appService',function($http,$timeout,$interval,bootstrapNotify) {
 					scope.views.office = '';
 				}
 				
+				scope.views.toggledDraw = localStorage.toggledDraw;
+				scope.views.toggledDrawPrizeType = localStorage.toggledDrawPrizeType;
+				
 				if (localStorage.status == "start") {
 
 					localStorage.status = "stop";
@@ -62,6 +65,9 @@ app.controller('monitorCtrl', function($scope,$interval,appService,bootstrapNoti
 		localStorage.prize = 0;
 		localStorage.prize_type = "";
 		localStorage.clearScreen = 0;
+		
+		// localStorage.toggledDraw = "";
+		// localStorage.toggledDrawPrizeType = "";
 		
 		bootstrapNotify.show('success','Monitor is ready for raffle draws.');
 		appService.draw($scope);		

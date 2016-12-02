@@ -83,10 +83,27 @@ app.factory('appService',function($http,$timeout,bootstrapModal,bootstrapNotify,
 		
 		self.draw = function(scope,draw) {
 			
-			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to draw '+draw['prize_description']+'?',function() { execDraw(); },function() {});
+			$http({
+			  method: 'POST',
+			  url: 'controllers/dashboard.php?r=validate_winners',
+			  data: {id: draw['id']}
+			}).then(function mySucces(response) {
+
+				if ((parseInt(response.data['total']) + 1) <= parseInt(draw['no_of_winners'])) {
+					bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to draw '+draw['prize_description']+'?',function() { execDraw(); },function() {});
+				} else {
+					bootstrapNotify.show('danger','Maximum allowed no of winner(s) for ' + draw['prize_description'] + 'has been reached');
+				}
+				
+				
+			}, function myError(response) {
+
+			  // error
+
+			});
 
 			function execDraw() {
-
+				
 				localStorage.status = "start";
 				localStorage.prize = draw['id'];
 				localStorage.prize_type = draw['prize_type'];
@@ -124,6 +141,34 @@ app.factory('appService',function($http,$timeout,bootstrapModal,bootstrapNotify,
 			}			
 			
 		};
+		
+		self.delWinner = function(scope,id) {
+			
+			bootstrapModal.confirm(scope,'Confirmation','Are you sure you want to delete this winner?',function() { delWinner(); },function() {});
+
+			function delWinner() {
+				
+				blockUI.show();
+				$http({
+				  method: 'POST',
+				  url: 'controllers/dashboard.php?r=delete_winner',
+				  data: {id: [id]}
+				}).then(function mySucces(response) {
+					
+					$('#dynamic-table').dataTable().fnDestroy();
+					self.draws(scope);
+					blockUI.hide();
+					localStorage.clearScreen = 1;
+					
+				}, function myError(response) {
+
+				  // error
+
+				});					
+				
+			}			
+			
+		};		
 		
 	};
 	
@@ -184,6 +229,10 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService) {
 	
 	$scope.del = function(id) {
 		appService.del($scope,id);
+	};
+	
+	$scope.delWinner = function(id) {
+		appService.delWinner($scope,id);
 	};
 	
 	$scope.monitor = function() {

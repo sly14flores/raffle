@@ -13,7 +13,7 @@ switch ($_GET['r']) {
 		$draws = $con->getData("SELECT id, (SELECT prize_description FROM prizes WHERE id = prize_id) description, (SELECT prize_type FROM prizes WHERE id = prize_id) prize_type, DATE_FORMAT(draw_date, '%b %d, %Y') date_drawn FROM draws");
 		
 		foreach ($draws as $key => $value) {
-			$winners = $con->getData("SELECT employees.id, employees.empid, employees.fullname, employees.office FROM winners LEFT JOIN employees ON winners.employee_id = employees.id WHERE draw_id = $value[id]");
+			$winners = $con->getData("SELECT winners.id, employees.empid, employees.fullname, employees.office FROM winners LEFT JOIN employees ON winners.employee_id = employees.id WHERE draw_id = $value[id]");
 			$draws[$key]["winners"] = $winners;
 		}
 
@@ -42,6 +42,15 @@ switch ($_GET['r']) {
 	
 	break;
 	
+	case "validate_winners":
+		
+		$con = new pdo_db("winners");
+		$winners = $con->getData("SELECT COUNT(*) total FROM winners WHERE draw_id = $_POST[id]");
+		
+		echo json_encode($winners[0]);
+		
+	break;
+	
 	case "add":
 		
 		$con = new pdo_db("draws");
@@ -55,6 +64,13 @@ switch ($_GET['r']) {
 		$con->deleteData(array("id"=>implode(",",$_POST['id'])));		
 	
 	break;
+	
+	case "delete_winner":
+		
+		$con = new pdo_db("winners");
+		$con->deleteData(array("id"=>implode(",",$_POST['id'])));		
+	
+	break;	
 	
 }
 

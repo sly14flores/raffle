@@ -25,6 +25,7 @@
 							<th>EmpID</th>
 							<th>Fullname</th>
 							<th>Office</th>
+							<th>&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -33,6 +34,13 @@
 							<td>{{winner.empid}}</td>
 							<td>{{winner.fullname}}</td>
 							<td>{{winner.office}}</td>
+							<td>
+							<div class="hidden-sm hidden-xs action-buttons">
+								<a class="green" href="javascript:;" ng-click="delWinner(winner.id)">
+									<i class="ace-icon glyphicon glyphicon-remove bigger-130"></i>
+								</a>						
+							</div>							
+							</td>
 						</tr>
 					</tbody>
 					</table>

@@ -277,6 +277,10 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService,bootst
 		
 	};
 	
+	$scope.print = function(id) {
+		window.open("reports/report.php?id="+id);
+	}
+	
 	appService.draws($scope);
 
 	$timeout(function() { $scope.views.prizeTypeSelect(); },100);

@@ -174,6 +174,7 @@
 										<option value="">-</option>										
 										<option value="Minor">Minor Prize</option>
 										<option value="Major">Major Prize</option>
+										<option value="Jackpot">Jackpot Prize</option>
 									</select>
 								  </div>
 								  <div class="form-group">

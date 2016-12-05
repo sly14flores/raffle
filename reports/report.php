@@ -13,18 +13,26 @@ function Header()
     // Logo
     // $this->Image('../images/logo.png',105,6,19);
     // $this->Image('../images/logo-bak.png',85,6,18);
-
+	
+	global $title, $raffle, $prize;
+	
     // Arial bold 15
     $this->SetFont('Arial','',9);
-    $this->Ln(15);
-    $this->Cell(0,4,'Don Mariano Marcos Memorial State University',0,1,'C');
-    $this->Cell(0,4,'Mid La Union Campus',0,1,'C');
-    $this->Cell(0,4,'San Fernando City',0,1,'C');
-    $this->Cell(0,4,'La Union 2500',0,1,'C');
+    $this->SetTextColor(66,66,66);
+    $this->Cell(0,5,'PGLU - eRaffle System',0,1,'C');
+    $this->SetFont('Arial','B',9);
+	$this->SetFontSize(11);
+    $this->Cell(0,5,$title,0,1,'C');
     $this->Ln(5);
-    $this->SetFont('Arial','B',9);	
-    $this->Cell(0,4,'Integrated Campus Testing & Scholarship System',0,1,'C');
-    $this->Ln(5);	
+	$this->SetDrawColor(92,92,92);
+	$this->Line(5,25,205,25);
+	$this->Ln(10);
+    $this->SetFont('Arial','B',14);
+    $this->Cell(0,6,$prize,0,1,'C');
+    $this->SetFont('Arial','',9);
+	$this->SetTextColor(92,92,92);	
+    $this->Cell(0,5,$raffle,0,1,'C');	
+
 }
 
 // Page footer
@@ -35,42 +43,45 @@ function Footer()
     // Arial italic 8
     $this->SetFont('Arial','I',8);
     // Page number
+    $this->SetTextColor(66,66,66);	
     $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
 }
 
-function Scholarship($header, $data)
+function winners($header, $data)
 {
-	$semester = array(1=>"First",2=>"Second");
-    $this->Ln(2);	
+	
+    $this->Ln(10);	
     // Colors, line width and bold font
-    $this->SetFillColor(106,168,65);
-    $this->SetTextColor(34,73,8);
-    $this->SetDrawColor(68,114,37);
+    $this->SetFillColor(60,159,223);
+    $this->SetTextColor(66,66,66);
+    $this->SetDrawColor(17,87,133);
     $this->SetLineWidth(.3);
-    $this->SetFont('','B');
+    // $this->SetFont('','B');
+
     // Header
-    $w = array(22, 40, 40, 43, 43);
-    for($i=0;$i<count($header);$i++)
-        $this->Cell($w[$i],7,$header[$i],1,0,'C',true);
+	$closingLine = 0;
+	foreach ($header as $i => $h) {
+		$this->Cell(array_keys($header[$i])[0],7,$header[$i][array_keys($header[$i])[0]],1,0,'C',true);
+		$closingLine += array_keys($header[$i])[0];
+	}
     $this->Ln();
+	
     // Color and font restoration
     $this->SetFillColor(224,235,255);
-    $this->SetTextColor(65,68,64);
-	$this->SetFont('Arial','',8);
+    $this->SetTextColor(66,66,66);
+	$this->SetFont('Arial','',10);
     // Data
+	
     $fill = false;
-    foreach($data as $row)
-    {
-        $this->Cell($w[0],6,$row['student_id'],'LR',0,'C',$fill);
-        $this->Cell($w[1],6,$row['full_name'],'LR',0,'C',$fill);
-        $this->Cell($w[2],6,$row['course'],'LR',0,'C',$fill);
-        $this->Cell($w[3],6,$row['college'],'LR',0,'C',$fill);
-        $this->Cell($w[4],6,$semester[$row['semester']],'LR',0,'C',$fill);
+    foreach($data as $key => $row) {
+		foreach ($header as $i => $h) {
+			$this->Cell(array_keys($header[$i])[0],7,$row[array_keys($row)[$i]],'LR',0,'C',$fill);
+		}
         $this->Ln();
-        $fill = !$fill;
-    }
-    // Closing line
-    $this->Cell(array_sum($w),0,'','T');
+        $fill = !$fill;		
+    }	
+    $this->Cell($closingLine,0,'','T');
+	
 }
 
 }
@@ -79,12 +90,26 @@ $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetFont('Arial','',11);
-$pdf->Cell(0,5,"$title",0,1,'C');
 
-/* $header = array("Student ID","Fullname","Course","College","Semester");
-$sql = "SELECT accounts.student_id, CONCAT(accounts.first_name, ' ', accounts.middle_name, ' ', accounts.last_name) full_name, scholarships.course, scholarships.college, scholarships.semester FROM scholarships LEFT JOIN accounts ON scholarships.account_id = accounts.id WHERE application_type IN ($scholarship_type) AND account_type != 'Administrator' AND scholarships.status IN ('Approved') AND scholarships.school_year = '$_GET[school_year]'";
+$header = array(
+	array(30=>"EmpID"),
+	array(90=>"Name"),
+	array(70=>"Office")
+);
+
+$title = "Christmas Party 2016";
+
+$sql = "SELECT prizes.prize_type raffle, prizes.prize_description prize FROM draws LEFT JOIN prizes ON draws.prize_id = prizes.id WHERE draws.id = $_GET[id]";
+$draws = $con->getData($sql);
+foreach ($draws as $draw) {
+	$raffle = $draw['raffle'];
+	$prize = $draw['prize'];
+}
+
+$sql = "SELECT employees.empid, employees.fullname, employees.office FROM winners LEFT JOIN employees ON winners.employee_id = employees.id WHERE winners.draw_id = $_GET[id]";
 $data = $con->getData($sql);
-$pdf->Scholarship($header,$data); */
+
+$pdf->winners($header,$data);
 
 $pdf->Output();
 

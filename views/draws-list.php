@@ -61,7 +61,7 @@
 							<i class="ace-icon glyphicon glyphicon-plus bigger-130"></i>
 						</a>					
 						<a class="green" href="javascript:;">
-							<i class="ace-icon glyphicon glyphicon-print bigger-130"></i>
+							<i class="ace-icon glyphicon glyphicon-print bigger-130" ng-click="print(info.id)"></i>
 						</a>
 						<a class="green" href="javascript:;" ng-click="del(info.id)">
 							<i class="ace-icon glyphicon glyphicon-remove bigger-130"></i>

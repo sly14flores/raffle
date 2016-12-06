@@ -31,14 +31,20 @@ function Header()
     $this->Cell(0,6,$prize,0,1,'C');
     $this->SetFont('Arial','',9);
 	$this->SetTextColor(92,92,92);	
-    $this->Cell(0,5,$raffle,0,1,'C');	
+    $this->Cell(0,5,$raffle,0,1,'C');
 
 }
 
 // Page footer
 function Footer()
 {
-    // Position at 1.5 cm from bottom
+	if ($this->isFinished) {
+		$this->SetDrawColor(92,92,92);	
+		$this->Line(85,265,125,265);
+		$this->SetY(-30);
+		$this->Cell(0,5,"In Charge",0,1,'C');	
+	}	
+    // Position at 1.5 cm from bottom	
     $this->SetY(-15);
     // Arial italic 8
     $this->SetFont('Arial','I',8);
@@ -50,7 +56,7 @@ function Footer()
 function winners($header, $data)
 {
 	
-    $this->Ln(10);	
+    $this->Ln(8);	
     // Colors, line width and bold font
     $this->SetFillColor(60,159,223);
     $this->SetTextColor(66,66,66);
@@ -81,9 +87,18 @@ function winners($header, $data)
         $fill = !$fill;		
     }	
     $this->Cell($closingLine,0,'','T');
-	
+
 }
 
+}
+
+$title = "Christmas Party 2016";
+
+$sql = "SELECT prizes.prize_type raffle, prizes.prize_description prize FROM draws LEFT JOIN prizes ON draws.prize_id = prizes.id WHERE draws.id = $_GET[id]";
+$draws = $con->getData($sql);
+foreach ($draws as $draw) {
+	$raffle = $draw['raffle'];
+	$prize = $draw['prize'];
 }
 
 $pdf = new PDF();
@@ -97,20 +112,11 @@ $header = array(
 	array(70=>"Office")
 );
 
-$title = "Christmas Party 2016";
-
-$sql = "SELECT prizes.prize_type raffle, prizes.prize_description prize FROM draws LEFT JOIN prizes ON draws.prize_id = prizes.id WHERE draws.id = $_GET[id]";
-$draws = $con->getData($sql);
-foreach ($draws as $draw) {
-	$raffle = $draw['raffle'];
-	$prize = $draw['prize'];
-}
-
 $sql = "SELECT employees.empid, employees.fullname, employees.office FROM winners LEFT JOIN employees ON winners.employee_id = employees.id WHERE winners.draw_id = $_GET[id]";
 $data = $con->getData($sql);
 
 $pdf->winners($header,$data);
-
+$pdf->isFinished = true;
 $pdf->Output();
 
 ?>

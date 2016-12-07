@@ -1,4 +1,4 @@
-var app = angular.module('monitor', ['bootstrap-notify']);
+var app = angular.module('monitor', ['bootstrap-notify','ngAnimate']);
 
 app.factory('appService',function($http,$timeout,$interval,bootstrapNotify) {
 	

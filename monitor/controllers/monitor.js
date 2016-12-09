@@ -16,8 +16,13 @@ app.factory('appService',function($http,$timeout,$interval,bootstrapNotify) {
 					scope.views.office = '';
 				}
 				
-				scope.views.toggledDraw = localStorage.toggledDraw;
-				scope.views.toggledDrawPrizeType = localStorage.toggledDrawPrizeType;
+				if (localStorage.showDrawPrize > 0) {
+					scope.views.showDrawPrize = true;
+					scope.views.toggledDraw = localStorage.toggledDraw;
+					scope.views.toggledDrawPrizeType = localStorage.toggledDrawPrizeType;
+				} else {
+					scope.views.showDrawPrize = false;
+				}
 				
 				if (localStorage.status == "start") {
 
@@ -55,6 +60,8 @@ app.controller('monitorCtrl', function($scope,$interval,appService,bootstrapNoti
 	$scope.views.pick = '';
 	$scope.views.office = '';
 	
+	$scope.views.showDrawPrize = false;
+	
 	if ( (localStorage.status == undefined) || (localStorage.prize == undefined) || (localStorage.prize_type == undefined) || (localStorage.clear == undefined) ) {
 		
 		bootstrapNotify.show('danger','Monitor is not ready, make sure the Dashboard in the Admin Page is active.');
@@ -65,9 +72,6 @@ app.controller('monitorCtrl', function($scope,$interval,appService,bootstrapNoti
 		localStorage.prize = 0;
 		localStorage.prize_type = "";
 		localStorage.clearScreen = 0;
-		
-		// localStorage.toggledDraw = "";
-		// localStorage.toggledDrawPrizeType = "";
 		
 		bootstrapNotify.show('success','Monitor is ready for raffle draws.');
 		appService.draw($scope);		

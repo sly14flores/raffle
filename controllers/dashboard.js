@@ -260,9 +260,7 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService,bootst
 	$scope.toggle = function(prize) {
 		
 		$scope.views.toggledDraw = {};		
-		localStorage.toggledDraw = "";
-		localStorage.toggledDrawPrizeType = "";
-		localStorage.clearScreen = 1;		
+
 		angular.forEach($scope.views.toggles, function(value, key) {
 			if (prize.id != key) {
 				$scope.views.toggles[key] = false;
@@ -271,8 +269,11 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService,bootst
 		if ($scope.views.toggles[prize.id]) {
 			$scope.views.toggledDraw = prize;
 			bootstrapNotify.show('success',prize['description'] + ' is toggled on');
+			localStorage.showDrawPrize = prize['id'];
 			localStorage.toggledDraw = prize['description'];
 			localStorage.toggledDrawPrizeType = prize['prize_type'] + ' Prize';
+		} else {
+			localStorage.showDrawPrize = 0;
 		}
 		
 	};
@@ -290,13 +291,13 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService,bootst
 	if (localStorage.prize_type == undefined) localStorage.prize_type = "";
 	if (localStorage.clearScreen == undefined) localStorage.clearScreen = 0;
 	
+	if (localStorage.showDrawPrize == undefined) localStorage.showDrawPrize = 0;
 	if (localStorage.toggledDraw == undefined) localStorage.toggledDraw = "";
 	if (localStorage.toggledDrawPrizeType == undefined) localStorage.toggledDrawPrizeType = "";
 	
 	$scope.views.toggles = {};
 	$scope.views.toggledDraw = {};
-
-	localStorage.toggledDraw = "";
-	localStorage.toggledDrawPrizeType = "";	
+	
+	localStorage.showDrawPrize = 0;
 	
 });

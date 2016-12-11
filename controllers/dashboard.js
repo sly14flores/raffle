@@ -258,23 +258,41 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService,bootst
 	};
 	
 	$scope.toggle = function(prize) {
-		
-		$scope.views.toggledDraw = {};		
 
-		angular.forEach($scope.views.toggles, function(value, key) {
-			if (prize.id != key) {
-				$scope.views.toggles[key] = false;
-			}
-		});
-		if ($scope.views.toggles[prize.id]) {
-			$scope.views.toggledDraw = prize;
-			bootstrapNotify.show('success',prize['description'] + ' is toggled on');
-			localStorage.showDrawPrize = prize['id'];
-			localStorage.toggledDraw = prize['description'];
-			localStorage.toggledDrawPrizeType = prize['prize_type'] + ' Prize';
+		$scope.views.toggledDraw = {};	
+		
+		var c = Object.keys($scope.views.toggles).length;				
+		
+		if (c > 1) {
+			localStorage.showDrawPrize = 0;			
+			oneSelection();			
+			$timeout(function() { showDrawPrize(); },500);
 		} else {
-			localStorage.showDrawPrize = 0;
+			oneSelection();
+			showDrawPrize();
 		}
+		
+		function oneSelection() {
+			angular.forEach($scope.views.toggles, function(value, key) {
+				if (prize.id != key) {
+					$scope.views.toggles[key] = false;
+				}
+			});
+		};
+		
+		function showDrawPrize() {
+			
+			if ($scope.views.toggles[prize.id]) {
+				$scope.views.toggledDraw = prize;
+				bootstrapNotify.show('success',prize['description'] + ' is toggled on');
+				localStorage.showDrawPrize = prize['id'];
+				localStorage.toggledDraw = prize['description'];
+				localStorage.toggledDrawPrizeType = prize['prize_type'] + ' Prize';
+			} else {
+				localStorage.showDrawPrize = 0;
+			}
+		
+		};
 		
 	};
 	
@@ -296,6 +314,10 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService,bootst
 	if (localStorage.toggledDrawPrizeType == undefined) localStorage.toggledDrawPrizeType = "";
 	
 	$scope.views.toggles = {};
+/* 	$scope.views.toggles.prototype.length = function() {
+		return Object.keys(this).length;
+	}; */
+	
 	$scope.views.toggledDraw = {};
 	
 	localStorage.showDrawPrize = 0;

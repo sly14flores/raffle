@@ -42,34 +42,6 @@
 		
 		<style type="text/css">
 		
-			@keyframes showDrawPrize {
-				0% {
-					top: -150px;
-				}
-				100% {
-					top: 0px;
-				}
-			}
-		
-			.show-draw-prize {
-				animation-name: showDrawPrize;
-				animation-duration: .5s;
-			}
-			
-			@keyframes hideDrawPrize {
-				0% {
-					top: 0px;
-				}
-				100% {
-					top: -150px;
-				}				
-			}
-			
-			.hide-draw-prize: {
-				animation-name: hideDrawPrize;
-				animation-duration: 1s;			
-			}
-		
 			body {
 				background-color: #fff;
 			}
@@ -90,13 +62,37 @@
 				color: #ea375c;
 			}			
 			
-			.offset-top {
+			@keyframes showDrawPrize {
+				0% {
+					top: -150px;
+				}
+				100% {
+					top: 0px;
+				}
+			}
+		
+			.show-draw-prize {
+				animation-name: showDrawPrize;
+				animation-duration: 1s;
+			}			
+			
+			@keyframes hideDrawPrize {
+				0% {
+					top: 0px;
+				}
+				100% {
+					top: -150px;
+				}
+			}			
+			
+			.hide-draw-prize {
+				animation-name: hideDrawPrize;
+				animation-duration: 1s;
+			}			
+			
+			.offset-to-hide {
 				top: -150px;
 			}
-			
-			.offset-reset {
-				top: 0px;
-			}			
 			
 			.pick {
 				margin-top: 5%;
@@ -117,8 +113,8 @@
 	<body class="no-skin" ng-app="monitor" ng-controller="monitorCtrl">
 
 		<div class="main-container" id="main-container">
-			<p ng-class="{'toggled-draw-type': true, 'offset-reset': views.showDrawPrize, 'offset-top': !views.showDrawPrize, 'show-draw-prize': views.showDrawPrize, 'hide-draw-prize': !views.showDrawPrize}">{{views.toggledDrawPrizeType}}</p>
-			<p ng-class="{'toggled-draw': true, 'offset-reset': views.showDrawPrize, 'offset-top': !views.showDrawPrize, 'show-draw-prize': views.showDrawPrize, 'hide-draw-prize': !views.showDrawPrize}">{{views.toggledDraw}}</p>			
+			<p class="toggled-draw-type" ng-class="{'show-draw-prize': views.showDrawPrize, 'hide-draw-prize': !views.showDrawPrize, 'offset-to-hide': !views.showDrawPrize}">{{views.toggledDrawPrizeType}}</p>
+			<p class="toggled-draw" ng-class="{'show-draw-prize': views.showDrawPrize, 'hide-draw-prize': !views.showDrawPrize, 'offset-to-hide': !views.showDrawPrize}">{{views.toggledDraw}}</p>			
 			<p class="pick">{{views.pick}}</p>
 			<p class="office">{{views.office}}</p>
 		</div>

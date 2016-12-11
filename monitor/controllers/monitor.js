@@ -19,7 +19,7 @@ app.factory('appService',function($http,$timeout,$interval,bootstrapNotify) {
 				if (localStorage.showDrawPrize > 0) {
 					scope.views.showDrawPrize = true;
 					scope.views.toggledDraw = localStorage.toggledDraw;
-					scope.views.toggledDrawPrizeType = localStorage.toggledDrawPrizeType;
+					scope.views.toggledDrawPrizeType = localStorage.toggledDrawPrizeType;					
 				} else {
 					scope.views.showDrawPrize = false;
 				}

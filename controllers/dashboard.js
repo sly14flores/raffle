@@ -259,7 +259,8 @@ app.controller('dashboardCtrl', function($http,$scope,$timeout,appService,bootst
 	
 	$scope.toggle = function(prize) {
 
-		$scope.views.toggledDraw = {};	
+		$scope.views.toggledDraw = {};
+		localStorage.clearScreen = 1;
 		
 		var c = Object.keys($scope.views.toggles).length;				
 		

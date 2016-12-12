@@ -33,8 +33,14 @@ app.factory('appService',function($http,$timeout,$interval,bootstrapNotify) {
 					  url: 'controllers/monitor.php?r=draw',
 					  data: {draw_id: localStorage.prize}
 					}).then(function mySucces(response) {
-						scope.views.pick = response.data['fullname'];
-						scope.views.office = response.data['office'];
+						
+						scope.views.raffle = "images/raffle.gif";
+						$timeout(function() {
+							scope.views.raffle = "";
+							scope.views.pick = response.data['fullname'];
+							scope.views.office = response.data['office'];
+						}, 5500);
+						
 					}, function myError(response) {
 
 					  // error
@@ -59,6 +65,7 @@ app.controller('monitorCtrl', function($scope,$interval,appService,bootstrapNoti
 	
 	$scope.views.pick = '';
 	$scope.views.office = '';
+	$scope.views.raffle	= '';
 	
 	$scope.views.showDrawPrize = false;
 	

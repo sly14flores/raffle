@@ -95,6 +95,8 @@
 			}
 			
 			.pick {
+				position: relative;
+				left: -35%;
 				margin-top: 5%;
 				text-align: center;
 				font-size: 7em;
@@ -102,9 +104,25 @@
 			}
 			
 			.office {
+				position: relative;
+				left: -35%;
 				text-align: center;
 				font-size: 5em;
 				color: #3a75a5;
+			}
+			
+			.winner {
+				position: absolute;
+				left: 40%;			
+			}
+			
+			.inner-winner {
+				position: relative;				
+				left: -40%;			
+			}
+			
+			.winner img {
+				width: 120%;
 			}
 		
 		</style>
@@ -115,8 +133,13 @@
 		<div class="main-container" id="main-container">
 			<p class="toggled-draw-type" ng-class="{'show-draw-prize': views.showDrawPrize, 'hide-draw-prize': !views.showDrawPrize, 'offset-to-hide': !views.showDrawPrize}">{{views.toggledDrawPrizeType}}</p>
 			<p class="toggled-draw" ng-class="{'show-draw-prize': views.showDrawPrize, 'hide-draw-prize': !views.showDrawPrize, 'offset-to-hide': !views.showDrawPrize}">{{views.toggledDraw}}</p>			
-			<p class="pick">{{views.pick}}</p>
-			<p class="office">{{views.office}}</p>
+			<div class="winner">
+				<div class="inner-winner">
+					<img src="{{views.raffle}}">
+				</div>				
+				<p class="pick">{{views.pick}}</p>
+				<p class="office">{{views.office}}</p>
+			</div>
 		</div>
 	
 		<div class="footer">

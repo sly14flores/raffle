@@ -65,9 +65,9 @@ class pdo_db {
 		
 		foreach ($data as $key => $value) {
 			$this->prepare .= $key . ",";
-			if ($value == 'CURRENT_TIMESTAMP') $prepare .= "$value,";
+			if ($value === 'CURRENT_TIMESTAMP') $prepare .= "$value,";
 			else $prepare .= ":$key,";
-			if ($value == 'CURRENT_TIMESTAMP') continue;
+			if ($value === 'CURRENT_TIMESTAMP') continue;
 			$insert[":$key"] = $value;
 		}
 		

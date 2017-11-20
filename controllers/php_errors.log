@@ -1,0 +1,12 @@
+[20-Nov-2017 15:58:05 Asia/Manila] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1701 Cannot truncate a table referenced in a foreign key constraint (`raffle`.`winners`, CONSTRAINT `winners_ibfk_2` FOREIGN KEY (`employee_id`) REFERENCES `raffle`.`employees` (`id`)) in C:\Users\sly\Desktop\UwAmp310\www\raffle\db.php:47
+Stack trace:
+#0 C:\Users\sly\Desktop\UwAmp310\www\raffle\db.php(47): PDO->query('TRUNCATE TABLE ...')
+#1 C:\Users\sly\Desktop\UwAmp310\www\raffle\controllers\employees.php(22): pdo_db->query('TRUNCATE TABLE ...')
+#2 {main}
+  thrown in C:\Users\sly\Desktop\UwAmp310\www\raffle\db.php on line 47
+[20-Nov-2017 16:00:02 Asia/Manila] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1701 Cannot truncate a table referenced in a foreign key constraint (`raffle`.`winners`, CONSTRAINT `winners_ibfk_2` FOREIGN KEY (`employee_id`) REFERENCES `raffle`.`employees` (`id`)) in C:\Users\sly\Desktop\UwAmp310\www\raffle\db.php:47
+Stack trace:
+#0 C:\Users\sly\Desktop\UwAmp310\www\raffle\db.php(47): PDO->query('TRUNCATE TABLE ...')
+#1 C:\Users\sly\Desktop\UwAmp310\www\raffle\controllers\employees.php(22): pdo_db->query('TRUNCATE TABLE ...')
+#2 {main}
+  thrown in C:\Users\sly\Desktop\UwAmp310\www\raffle\db.php on line 47

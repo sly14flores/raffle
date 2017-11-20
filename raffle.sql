@@ -1,20 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.10.1
+-- version 4.5.4.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 29, 2016 at 05:07 PM
--- Server version: 5.6.20
--- PHP Version: 5.4.31
+-- Generation Time: Nov 20, 2017 at 04:07 PM
+-- Server version: 5.7.11
+-- PHP Version: 7.0.3
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `raffle`
@@ -23,23 +23,36 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `accounts`
+--
+
+CREATE TABLE `accounts` (
+  `id` int(10) NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `middle_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `accounts`
+--
+
+INSERT INTO `accounts` (`id`, `first_name`, `middle_name`, `last_name`, `username`, `password`) VALUES
+(1, 'Administrator', '', '', 'admin', 'hradmin');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `draws`
 --
 
-CREATE TABLE IF NOT EXISTS `draws` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `draws` (
+  `id` int(10) NOT NULL,
   `prize_id` int(10) NOT NULL,
-  `draw_date` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `prize_id` (`prize_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `draws`
---
-
-INSERT INTO `draws` (`id`, `prize_id`, `draw_date`) VALUES
-(1, 1, '2016-11-29 17:06:19');
+  `draw_date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -47,13 +60,12 @@ INSERT INTO `draws` (`id`, `prize_id`, `draw_date`) VALUES
 -- Table structure for table `employees`
 --
 
-CREATE TABLE IF NOT EXISTS `employees` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `employees` (
+  `id` int(10) NOT NULL,
   `fullname` varchar(100) NOT NULL,
   `empid` varchar(10) NOT NULL,
-  `office` varchar(200) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1707 ;
+  `office` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `employees`
@@ -1070,9 +1082,9 @@ INSERT INTO `employees` (`id`, `fullname`, `empid`, `office`) VALUES
 (1008, 'Suguitan, Mary Ann', '', 'PHO'),
 (1009, 'SIAS, ELIZABETH PACHO', '54020', 'PEO'),
 (1010, 'ASPRER, JOSE DACPANO', '58038', 'PEO'),
-(1011, 'ACCAD, EDWIN DURIA', '60033', 'PEO');
+(1011, 'ACCAD, EDWIN DURIA', '60033', 'PEO'),
+(1012, 'ALMANZA, MYRA DIONES', '69052', 'PEO');
 INSERT INTO `employees` (`id`, `fullname`, `empid`, `office`) VALUES
-(1012, 'ALMANZA, MYRA DIONES', '69052', 'PEO'),
 (1013, 'ALVIAR, ALEJANDRINO LABSAN', '73050', 'PEO'),
 (1014, 'ANCHETA, ANTONIO, JR. PIMENTEL', '65039', 'PEO'),
 (1015, 'ANTONIO, JOE BRIAN APILADO', '85072', 'PEO'),
@@ -1774,21 +1786,19 @@ INSERT INTO `employees` (`id`, `fullname`, `empid`, `office`) VALUES
 -- Table structure for table `prizes`
 --
 
-CREATE TABLE IF NOT EXISTS `prizes` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `prizes` (
+  `id` int(10) NOT NULL,
   `prize_type` varchar(10) NOT NULL,
   `prize_description` varchar(100) NOT NULL,
-  `no_of_winners` int(10) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  `no_of_winners` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `prizes`
 --
 
 INSERT INTO `prizes` (`id`, `prize_type`, `prize_description`, `no_of_winners`) VALUES
-(1, 'Major', 'First Prize', 1),
-(2, 'Minor', 'Consolation Prize', 10);
+(1, 'Minor', 'Minor', 5);
 
 -- --------------------------------------------------------
 
@@ -1796,15 +1806,78 @@ INSERT INTO `prizes` (`id`, `prize_type`, `prize_description`, `no_of_winners`) 
 -- Table structure for table `winners`
 --
 
-CREATE TABLE IF NOT EXISTS `winners` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `winners` (
+  `id` int(10) NOT NULL,
   `draw_id` int(10) NOT NULL,
-  `employee_id` int(10) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `draw_id` (`draw_id`),
-  KEY `employee_id` (`employee_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+  `employee_id` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `accounts`
+--
+ALTER TABLE `accounts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `draws`
+--
+ALTER TABLE `draws`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `prize_id` (`prize_id`);
+
+--
+-- Indexes for table `employees`
+--
+ALTER TABLE `employees`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `prizes`
+--
+ALTER TABLE `prizes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `winners`
+--
+ALTER TABLE `winners`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `draw_id` (`draw_id`),
+  ADD KEY `employee_id` (`employee_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `accounts`
+--
+ALTER TABLE `accounts`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `draws`
+--
+ALTER TABLE `draws`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `employees`
+--
+ALTER TABLE `employees`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1707;
+--
+-- AUTO_INCREMENT for table `prizes`
+--
+ALTER TABLE `prizes`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `winners`
+--
+ALTER TABLE `winners`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- Constraints for dumped tables
 --
@@ -1819,8 +1892,7 @@ ALTER TABLE `draws`
 -- Constraints for table `winners`
 --
 ALTER TABLE `winners`
-  ADD CONSTRAINT `winners_ibfk_1` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `winners_ibfk_2` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `winners_ibfk_1` FOREIGN KEY (`draw_id`) REFERENCES `draws` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -26,7 +26,7 @@ class pdo_db {
 		$db_name = "raffle";
 		$dsn = "mysql:host=$server;dbname=$db_name;charset=utf8";
 		$username = "root";
-		$password = "";
+		$password = "root";
 
 		$this->db = new PDO($dsn, $username, $password, array(PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 		$this->table = $table;
@@ -97,9 +97,9 @@ class pdo_db {
 		foreach ($data as $row) { // construct Prepared Statement
 			foreach ($row as $key => $value) {
 				$this->prepare .= $key . ",";
-				if ($value == 'CURRENT_TIMESTAMP') $prepare .= "$value,";
+				if ($value === 'CURRENT_TIMESTAMP') $prepare .= "$value,";
 				else $prepare .= ":$key,";
-				if ($value == 'CURRENT_TIMESTAMP') continue;
+				if ($value === 'CURRENT_TIMESTAMP') continue;
 			}
 			break;
 		}
@@ -108,7 +108,7 @@ class pdo_db {
 		
 			$insert = [];		
 			foreach ($row as $key => $value) {
-				if ($value == 'CURRENT_TIMESTAMP') continue;
+				if ($value === 'CURRENT_TIMESTAMP') continue;
 				$insert[$key] = $value;
 			}
 			$inserts[] = $insert;
